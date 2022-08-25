@@ -1,0 +1,13 @@
+{
+  "printWidth": 100,
+  "tabWidth": 2,
+  "bracketSpacing": true,
+  "trailingComma": "all",
+  "jsxBracketSameLine": false,
+  "arrowParens": "always",
+  "singleQuote": true,
+  "semi": true,
+  "endOfLine": "auto",
+  "importOrder": ["^[a-z\\-/]*$", "(^[src/]*$|^[./]|^[../])", ""],
+  "importOrderSeparation": true
+}
