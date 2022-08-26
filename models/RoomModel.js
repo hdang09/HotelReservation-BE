@@ -13,18 +13,18 @@ const schema = new mongoose.Schema(
     },
     checkIn: {
       type: Date,
-      required: false,
+      required: true,
     },
     checkOut: {
       type: Date,
-      required: false,
+      required: true,
     },
     idCard: {
       type: Number,
       required: true,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
     services: {
