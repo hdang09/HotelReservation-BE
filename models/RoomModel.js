@@ -6,6 +6,11 @@ const schema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+      default: 'Reserved',
+    },
     fullname: {
       type: String,
       required: true,
