@@ -102,17 +102,19 @@ export const getReport = async (req, res) => {
         const totalRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
 
         const date = new Date();
-        const today = date - ((date % MILISECOND_PER_DAY) + MILISECOND_PER_HOUR * TIME_ZONE);
-        console.log(reservedRooms[0].createdAt.getTime());
-        console.log(today);
+        const today = date - (date % 86400000);
+        console.log(new Date(today));
+        date.setTime(date.getTime() + 25200000);
+        console.log(date);
+
         const currentReservedRooms = await RoomModel.find({ status: 'Reserved' })
-            .where('createdAt')
+            .where('updatedAt')
             .gte(today);
         const currentCheckInRooms = await RoomModel.find({ status: 'Checked-in' })
-            .where('createdAt')
+            .where('updatedAt')
             .gte(today);
         const currentCheckOutRooms = await RoomModel.find({ status: 'Checked-out' })
-            .where('createdAt')
+            .where('updatedAt')
             .gte(today);
         const currentTotalRooms =
             currentReservedRooms.length + currentCheckInRooms.length + currentCheckOutRooms.length;
