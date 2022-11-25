@@ -1,5 +1,9 @@
 import { RoomModel } from '../models/RoomModel.js';
 
+const MILISECOND_PER_DAY = 86400000;
+const MILISECOND_PER_HOUR = 3600000;
+const TIME_ZONE = -(new Date().getTimezoneOffset() / 60);
+
 export const getAllRooms = async (req, res) => {
     try {
         const rooms = await RoomModel.find();
@@ -34,14 +38,6 @@ export const bookRoom = async (req, res) => {
             .where('checkOut')
             .gte(room.checkIn)
             .gte(room.checkOut);
-
-        // 22 - 25 (db)
-        // 26 - 28 => 200 => true
-        // 18 - 21 => 200 => true
-        // 20 - 24 => 400 => true
-        // 24 - 29 => 200 => true
-        // 23 - 29 => 400 => true
-        // 23 - 24 => 400 => true
 
         if (existedRoom) {
             res.status(400).json({ message: 'The room you booked already existed' });
@@ -106,15 +102,18 @@ export const getReport = async (req, res) => {
         const totalRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
 
         const date = new Date();
+        const today = date - ((date % MILISECOND_PER_DAY) + MILISECOND_PER_HOUR * TIME_ZONE);
+        console.log(reservedRooms[0].createdAt.getTime());
+        console.log(today);
         const currentReservedRooms = await RoomModel.find({ status: 'Reserved' })
-            .where('updatedAt')
-            .gte(date - (date % 86400000));
+            .where('createdAt')
+            .gte(today);
         const currentCheckInRooms = await RoomModel.find({ status: 'Checked-in' })
-            .where('updatedAt')
-            .gte(date - (date % 86400000));
+            .where('createdAt')
+            .gte(today);
         const currentCheckOutRooms = await RoomModel.find({ status: 'Checked-out' })
-            .where('updatedAt')
-            .gte(date - (date % 86400000));
+            .where('createdAt')
+            .gte(today);
         const currentTotalRooms =
             currentReservedRooms.length + currentCheckInRooms.length + currentCheckOutRooms.length;
 
@@ -138,6 +137,33 @@ export const getReport = async (req, res) => {
                     current: currentCheckOutRooms.length,
                 },
             },
+        });
+    } catch (err) {
+        res.status(500).json({ error: err });
+    }
+};
+
+export const getTodayAvailability = async (req, res) => {
+    try {
+        const singleRooms = await RoomModel.where('updatedAt').gte(
+            date - (date % MILISECOND_PER_DAY)
+        );
+        const doubleRooms = await RoomModel.where('updatedAt').gte(
+            date - (date % MILISECOND_PER_DAY)
+        );
+        const studioRooms = await RoomModel.where('updatedAt').gte(
+            date - (date % MILISECOND_PER_DAY)
+        );
+        const deluxeRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
+
+        res.status(200).json({
+            message: 'Get length successfully!',
+            report: [
+                { name: 'Single Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
+                { name: 'Double Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
+                { name: 'Studio Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
+                { name: 'Deluxe Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
+            ],
         });
     } catch (err) {
         res.status(500).json({ error: err });

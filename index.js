@@ -4,6 +4,12 @@ import cors from 'cors';
 import routers from './routers/index.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import fallback from 'express-history-api-fallback';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -17,6 +23,11 @@ app.use(express.json({ limit: '30mb' }));
 app.use(express.urlencoded({ extended: true, limit: '30mb' }));
 
 app.use('/', routers);
+
+// Fallback
+const root = `${__dirname}/public`;
+app.use(express.static(root));
+app.use(fallback('index.html', { root }));
 
 mongoose
     .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
