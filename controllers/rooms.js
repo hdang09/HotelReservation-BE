@@ -1,8 +1,6 @@
 import { RoomModel } from '../models/RoomModel.js';
 
 const MILISECOND_PER_DAY = 86400000;
-const MILISECOND_PER_HOUR = 3600000;
-const TIME_ZONE = -(new Date().getTimezoneOffset() / 60);
 
 export const getAllRooms = async (req, res) => {
     try {
@@ -102,10 +100,7 @@ export const getReport = async (req, res) => {
         const totalRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
 
         const date = new Date();
-        const today = date - (date % 86400000);
-        console.log(new Date(today));
-        date.setTime(date.getTime() + 25200000);
-        console.log(date);
+        const today = date - (date % MILISECOND_PER_DAY);
 
         const currentReservedRooms = await RoomModel.find({ status: 'Reserved' })
             .where('updatedAt')
@@ -147,24 +142,40 @@ export const getReport = async (req, res) => {
 
 export const getTodayAvailability = async (req, res) => {
     try {
-        const singleRooms = await RoomModel.where('updatedAt').gte(
-            date - (date % MILISECOND_PER_DAY)
-        );
-        const doubleRooms = await RoomModel.where('updatedAt').gte(
-            date - (date % MILISECOND_PER_DAY)
-        );
-        const studioRooms = await RoomModel.where('updatedAt').gte(
-            date - (date % MILISECOND_PER_DAY)
-        );
-        const deluxeRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
+        // let arr = [];
+        // for (let i = 0; i < 8; i++) {
+        //     arr[i] = 3;
+        // }
+        let singleRooms = [3, 3, 3, 3, 3, 3, 3, 3];
+        let doubleRooms = [3, 3, 3, 3, 3, 3, 3, 3];
+        let studioRooms = [3, 3, 3, 3, 3, 3, 3, 3];
+        let deluxeRooms = [3, 3, 3, 3, 3, 3, 3, 3];
+
+        const date = new Date();
+        const allRooms = await RoomModel.where('updatedAt').gte(date - (date % MILISECOND_PER_DAY));
+        allRooms.forEach((room) => {
+            // console.log(room);
+            const floor = Math.floor(room.roomNumber / 100);
+            const roomNo = room.roomNumber % 100;
+            console.log(floor, roomNo);
+            if (roomNo <= 3) {
+                singleRooms[floor - 1] -= 1;
+            } else if (roomNo <= 6) {
+                doubleRooms[floor - 1] -= 1;
+            } else if (roomNo <= 9) {
+                studioRooms[floor - 1] -= 1;
+            } else {
+                deluxeRooms[floor - 1] -= 1;
+            }
+        });
 
         res.status(200).json({
             message: 'Get length successfully!',
             report: [
-                { name: 'Single Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
-                { name: 'Double Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
-                { name: 'Studio Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
-                { name: 'Deluxe Room', rooms: [3, 3, 5, 6, 5, 6, 8, 7] },
+                { name: 'Single Room', rooms: singleRooms },
+                { name: 'Double Room', rooms: doubleRooms },
+                { name: 'Studio Room', rooms: studioRooms },
+                { name: 'Deluxe Room', rooms: deluxeRooms },
             ],
         });
     } catch (err) {

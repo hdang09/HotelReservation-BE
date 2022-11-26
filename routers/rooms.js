@@ -8,6 +8,7 @@ import {
     updateRoomStatus,
     deleteRoom,
     getReport,
+    getTodayAvailability,
 } from '../controllers/rooms.js';
 
 /**
@@ -132,6 +133,20 @@ router.delete('/delete', deleteRoom);
  *            description: Bad Request
  */
 router.get('/report', getReport);
+
+/**
+ * @swagger
+ * /rooms/report-today:
+ *   get:
+ *      tags: [Report]
+ *      summary: Get all room for today's availability
+ *      responses:
+ *          200:
+ *            description: Success
+ *          404:
+ *            description: Bad Request
+ */
+router.get('/report-today', getTodayAvailability);
 
 /**
  * @swagger
