@@ -146,10 +146,18 @@ export const getTodayAvailability = async (req, res) => {
         // for (let i = 0; i < 8; i++) {
         //     arr[i] = 3;
         // }
-        let singleRooms = [3, 3, 3, 3, 3, 3, 3, 3];
-        let doubleRooms = [3, 3, 3, 3, 3, 3, 3, 3];
-        let studioRooms = [3, 3, 3, 3, 3, 3, 3, 3];
-        let deluxeRooms = [3, 3, 3, 3, 3, 3, 3, 3];
+        let singleRooms = Array(8)
+            .fill()
+            .map((item) => (item = 3));
+        let doubleRooms = Array(8)
+            .fill()
+            .map((item) => (item = 3));
+        let studioRooms = Array(8)
+            .fill()
+            .map((item) => (item = 3));
+        let deluxeRooms = Array(8)
+            .fill()
+            .map((item) => (item = 3));
 
         const date = new Date();
         const allRooms = await RoomModel.where('updatedAt').gte(date - (date % MILISECOND_PER_DAY));
@@ -157,7 +165,6 @@ export const getTodayAvailability = async (req, res) => {
             // console.log(room);
             const floor = Math.floor(room.roomNumber / 100);
             const roomNo = room.roomNumber % 100;
-            console.log(floor, roomNo);
             if (roomNo <= 3) {
                 singleRooms[floor - 1] -= 1;
             } else if (roomNo <= 6) {
