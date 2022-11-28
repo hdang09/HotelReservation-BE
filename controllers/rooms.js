@@ -142,10 +142,6 @@ export const getReport = async (req, res) => {
 
 export const getTodayAvailability = async (req, res) => {
     try {
-        // let arr = [];
-        // for (let i = 0; i < 8; i++) {
-        //     arr[i] = 3;
-        // }
         let singleRooms = Array(8)
             .fill()
             .map((item) => (item = 3));
@@ -162,7 +158,6 @@ export const getTodayAvailability = async (req, res) => {
         const date = new Date();
         const allRooms = await RoomModel.where('updatedAt').gte(date - (date % MILISECOND_PER_DAY));
         allRooms.forEach((room) => {
-            // console.log(room);
             const floor = Math.floor(room.roomNumber / 100);
             const roomNo = room.roomNumber % 100;
             if (roomNo <= 3) {
