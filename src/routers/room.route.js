@@ -1,15 +1,5 @@
-import express from 'express';
-const router = express.Router();
-import {
-    getAllRooms,
-    getSingleRoom,
-    bookRoom,
-    updateRoom,
-    updateRoomStatus,
-    deleteRoom,
-    getReport,
-    getTodayAvailability,
-} from '../controllers/rooms.js';
+const router = require('express').Router();
+const { roomController } = require('../controllers');
 
 /**
  * @swagger
@@ -23,7 +13,7 @@ import {
  *          404:
  *            description: Bad Request
  */
-router.get('/', getAllRooms);
+router.get('/', roomController.getAllRooms);
 
 /**
  * @swagger
@@ -42,7 +32,7 @@ router.get('/', getAllRooms);
  *          404:
  *            description: Bad Request
  */
-router.post('/specific', getSingleRoom);
+router.post('/specific', roomController.getSingleRoom);
 
 /**
  * @swagger
@@ -61,7 +51,7 @@ router.post('/specific', getSingleRoom);
  *          404:
  *            description: Bad Request
  */
-router.post('/', bookRoom);
+router.post('/', roomController.bookRoom);
 
 /**
  * @swagger
@@ -80,7 +70,7 @@ router.post('/', bookRoom);
  *          404:
  *            description: Bad Request
  */
-router.put('/update', updateRoom);
+router.put('/update', roomController.updateRoom);
 
 /**
  * @swagger
@@ -99,7 +89,7 @@ router.put('/update', updateRoom);
  *          404:
  *            description: Bad Request
  */
-router.put('/update-status', updateRoomStatus);
+router.put('/update-status', roomController.updateRoomStatus);
 
 /**
  * @swagger
@@ -118,7 +108,7 @@ router.put('/update-status', updateRoomStatus);
  *          404:
  *            description: Bad Request
  */
-router.delete('/delete', deleteRoom);
+router.delete('/delete', roomController.deleteRoom);
 
 /**
  * @swagger
@@ -132,7 +122,7 @@ router.delete('/delete', deleteRoom);
  *          404:
  *            description: Bad Request
  */
-router.get('/report', getReport);
+router.get('/report', roomController.getReport);
 
 /**
  * @swagger
@@ -146,7 +136,7 @@ router.get('/report', getReport);
  *          404:
  *            description: Bad Request
  */
-router.get('/report-today', getTodayAvailability);
+router.get('/report-today', roomController.getTodayAvailability);
 
 /**
  * @swagger
@@ -220,4 +210,4 @@ router.get('/report-today', getTodayAvailability);
  *            example: Checked-in
  */
 
-export default router;
+module.exports = router;

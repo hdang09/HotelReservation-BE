@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const schema = new mongoose.Schema(
+const roomSchema = new mongoose.Schema(
     {
         roomNumber: {
             type: Number,
@@ -48,4 +48,4 @@ const schema = new mongoose.Schema(
     { timestamps: true }
 );
 
-export const RoomModel = mongoose.model('Room', schema);
+module.exports = mongoose.model('Room', roomSchema);
