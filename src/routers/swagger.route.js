@@ -14,7 +14,7 @@ const options = {
         },
         servers: [{ url: config.URL_HOST }],
     },
-    apis: ['routers/*.js'],
+    apis: ['src/routers/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(options);
