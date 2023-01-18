@@ -1,1 +1,1 @@
-module.exports.User = require('./room.model');
+module.exports.Room = require('./room.model');

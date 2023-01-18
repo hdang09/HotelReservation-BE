@@ -102,7 +102,7 @@ const getReport = AsyncCatch(async (req, res) => {
     const totalRooms = reservedRooms.length + checkInRooms.length + checkOutRooms.length;
 
     const date = new Date();
-    const today = date - (date % MILISECOND_PER_DAY);
+    const today = date - (date % config.MILISECOND_PER_DAY);
 
     const currentReservedRooms = await Room.find({ status: 'Reserved' })
         .where('updatedAt')

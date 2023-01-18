@@ -12,11 +12,7 @@ const options = {
             version: '1.0.0',
             description: 'API for managing the hotel by admin',
         },
-        servers: [
-            {
-                url: config.URL_HOST,
-            },
-        ],
+        servers: [{ url: config.URL_HOST }],
     },
     apis: ['routers/*.js'],
 };
