@@ -1,17 +1,18 @@
-# Hotel Management API
+# Hotel Reservation API
 
 ## Description
 
-The API for managing a hotel of Mint Hotel.
+This is an API for reserving the rooms for Mint Hotel by the receptionist.
 
-Here is [the Frontend](https://github.com/hdang09/HotelManagement-FE).
+Here is [the Frontend](https://github.com/hdang09/HotelReservation-FE).
 
 Here is [the website](http://hotel.hdang09.site/).
 
 ## Technology
 
 -   Frontend
-    -   Vite React - Next Generation Frontend Tooling
+    -   React Vite - Next Generation Frontend Tooling
+    -   Tailwind - Rapidly build modern websites without ever leaving your HTML
 -   Backend
     -   Express - Server Core
     -   Mongoose + Mongo - Database

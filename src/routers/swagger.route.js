@@ -8,7 +8,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Hotel Management',
+            title: 'Hotel Reservation',
             version: '1.0.0',
             description: 'API for managing the hotel by admin',
         },
